@@ -1,0 +1,39 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "name": "craigelk",
+      "region": "us-east-1",
+      "source_ami": "ami-a4827dc9",
+      "instance_type":"t2.medium",
+      "ssh_username":"ec2-user",
+      "ami_name":"craigLF",
+      "ami_description":"craigelklogstashforwarder"
+    }
+  ],
+
+ "provisioners": [
+    {
+      "cookbook_paths": [
+        "/home/ubuntu/yourapp/.berkscache"
+      ],
+
+      "run_list": [
+        "logstash-forwarder::default"
+      ],
+      "type": "chef-solo"
+    },
+
+ {
+      "inline": [
+        "echo july",
+        "echo {{user `berkscache`}}",
+        "echo This machines AMI is  `curl http://169.254.169.254/latest/meta-data/ami-id`",
+        "echo `ls /tmp/packer-chef-client/cookbooks-0`",
+        "echo 1972"
+      ],
+      "type": "shell"
+    }
+  ]
+}
+

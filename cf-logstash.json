@@ -1,0 +1,51 @@
+{
+"AWSTemplateFormatVersion": "2010-09-09",
+"Description": "uses my Logstash AMI (craigLg ami-3e27e153)",
+
+"Mappings": {
+  "EC2RegionMap": {
+   "us-east-1": {"craigLgami": "ami-3e27e153"}
+  }
+},
+"Resources": {
+  "SecurityGroup": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "craigLg security group",
+    "VpcId": "vpc-0cef7968",
+    "SecurityGroupIngress": [
+    {
+     "CidrIp": "0.0.0.0/0",
+     "FromPort": 22,
+     "IpProtocol": "tcp",
+     "ToPort": 22
+    }
+    ]
+   }
+  },
+  "Server": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "Tags" : [{
+     "Key":"craig-elk-component",
+     "Value":"logstash"
+    }],
+    "ImageId": {
+     "Fn::FindInMap": [
+      "EC2RegionMap", {
+       "Ref": "AWS::Region"
+      },
+      "craigLgami"
+     ]
+    },
+    "InstanceType": "t2.medium",
+    "KeyName":  "kraig-vpc-2" ,
+    "SecurityGroupIds": [{
+     "Ref": "SecurityGroup"
+    }],
+    "IamInstanceProfile": "craigelk"
+   }
+  }
+}
+}
+

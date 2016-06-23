@@ -1,0 +1,49 @@
+sudo yum install java-1.8.0-openjdk-devel -y
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+
+#now let's get prepared for LF
+
+sudo sed -i '227iAT_LINE_227_INSERT_THIS_INSTANCES_PRIVATE_IP' /etc/pki/tls/openssl.cnf | sudo sed -i "s/AT_LINE_227_INSERT_THIS_INSTANCES_PRIVATE_IP/subjectAltName = IP: `curl http://169.254.169.254/latest/meta-data/local-ipv4 2>/dev/null`/" /etc/pki/tls/openssl.cnf
+cd /etc/pki/tls
+sudo openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout private/logstash-forwarder.key -out certs/logstash-forwarder.crt
+aws s3 cp /etc/pki/tls/certs/logstash-forwarder.crt s3://venicegeo-devops-dev-logstashforwarder-project
+
+aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/01-lumberjack-input.conf /tmp
+aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/10-syslog.conf /tmp
+aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/30-lumberjack-output.conf /tmp
+aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/modsecgrp_logstash.groovy /tmp
+sudo mkdir /opt/logstash/conf.d
+sudo cp /tmp/01-lumberjack-input.conf /opt/logstash/conf.d
+sudo cp /tmp/10-syslog.conf /opt/logstash/conf.d
+sudo cp /tmp/30-lumberjack-output.conf /opt/logstash/conf.d
+sudo cp /tmp/modsecgrp_logstash.groovy ~
+rm /tmp/01-lumberjack-input.conf 
+rm /tmp/10-syslog.conf 
+rm /tmp/30-lumberjack-output.conf
+
+##
+# Install Groovy.
+##
+
+sudo yum install java-1.8.0-openjdk-devel -y
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+curl -s get.sdkman.io | bash
+export SDKMAN_CANDIDATES_DIR=~/.sdkman/candidates
+export SDKMAN_DIR=~/.sdkman
+source ~/.sdkman/bin/sdkman-init.sh
+sed -i -e 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' ~/.sdkman/etc/config
+sdk install groovy
+
+##
+# Modify security groups that allow Logstash Forwarder to talk to Logstash.
+# Also modify /etc/logstash-forwarder.conf.
+##
+cd ~
+sudo cp ~/.sdkman/candidates/groovy/2.4.7/lib/groovy-2.4.7.jar .
+sudo cp ~/.sdkman/candidates/groovy/2.4.7/lib/groovy-json-2.4.7.jar .
+sudo ~/.sdkman/candidates/groovy/2.4.7/bin/groovyc modsecgrp_logstash.groovy
+sudo java -cp .:./groovy-2.4.7.jar:./groovy-json-2.4.7.jar modsecgrp_logstash /opt/logstash/conf.d/30-lumberjack-output.conf > /tmp/userdata-modsecgrp-output
+
+cd /opt/logstash/server/bin
+#./logstash –f /opt/logstash/conf.d
+#s/m: sudo service logstash start 
