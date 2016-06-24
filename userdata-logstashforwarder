@@ -1,3 +1,6 @@
+yum install java-1.8.0-openjdk-devel -y
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+
 ##
 # Get the Logstash host-generated certificate that allows Logstash Forwarder to talk to Logstash.
 ##
