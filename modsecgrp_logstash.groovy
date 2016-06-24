@@ -82,7 +82,7 @@ def logstashIPs                      = getInstanceIPAddresses('craigLg')
 def logstashSecurityGroupID          = getSecurityGroupID('craiglg-SecurityGroup')
 
 def elasticsearchIPs                 = getInstanceIPAddresses('craigES')
-def elasticsearchSecurityGroupID     = getSecurityGroupID('launch-wizard-10') //('craiges-SecurityGroup')
+def elasticsearchSecurityGroupID     = getSecurityGroupID('craiges-SecurityGroup')
 
 authorizeSecurityGroupIngress(
  'allow Lg to receive from ES on 9200', 
