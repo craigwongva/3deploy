@@ -23,7 +23,7 @@ export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
 curl -s get.sdkman.io | bash > /tmp/install-sdk 2>&1
 export SDKMAN_CANDIDATES_DIR=/.sdkman/candidates
 export SDKMAN_DIR=/.sdkman
-source /.sdkman/bin/sdkman-init.sh
+source /.sdkman/bin/sdkman-init.sh > /tmp/install-sdk-candidates 2>&1
 sed -i -e 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' /.sdkman/etc/config
 sdk install groovy > /tmp/install-groovy 2>&1
 
