@@ -2,16 +2,16 @@
 # Get the Logstash host-generated certificate that allows Logstash Forwarder to talk to Logstash.
 ##
 
-cd ~
+cd /
 aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/logstash-forwarder.crt .
-sudo mv logstash-forwarder.crt /etc/pki/tls/certs
+mv logstash-forwarder.crt /etc/pki/tls/certs
 
 ##
 # Get the template Logstash Forwarder conf file.
 ##
 
 aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/logstash-forwarder.conf .
-sudo mv logstash-forwarder.conf /etc
+mv logstash-forwarder.conf /etc
 
 ##
 # Customize the template Logstash Forwarder conf file.
@@ -19,43 +19,39 @@ sudo mv logstash-forwarder.conf /etc
 #        it is updated not by sed here, but by the Groovy script below.
 ##
 
-sudo sed -i '4s/ca-bundle.crt/logstash-forwarder.crt/'                                              /etc/logstash-forwarder.conf
+sed -i '4s/ca-bundle.crt/logstash-forwarder.crt/'                                              /etc/logstash-forwarder.conf
 
-sudo sed -i '8d'                                                                                    /etc/logstash-forwarder.conf
-sudo sed -i '8iENSURE-LEADING-WHITESPACE  "files": ['                                               /etc/logstash-forwarder.conf 
-sudo sed -i '8aENSURE-LEADING-WHITESPACE    {       '                                               /etc/logstash-forwarder.conf
-sudo sed -i '9aENSURE-LEADING-WHITESPACE      "paths": ['                                           /etc/logstash-forwarder.conf 
-sudo sed -i '10aENSURE-LEADING-WHITESPACE        "/var/log/messages",'                              /etc/logstash-forwarder.conf
-sudo sed -i '11aENSURE-LEADING-WHITESPACE        "/var/log/secure"'                                 /etc/logstash-forwarder.conf
-sudo sed -i '12aENSURE-LEADING-WHITESPACE      ],'                                                  /etc/logstash-forwarder.conf
-sudo sed -i '13aENSURE-LEADING-WHITESPACE      "fields": { "type": "syslog" }'                      /etc/logstash-forwarder.conf
-sudo sed -i '14aENSURE-LEADING-WHITESPACE    }'                                                     /etc/logstash-forwarder.conf
-sudo sed -i '15aENSURE-LEADING-WHITESPACE  ]'                                                       /etc/logstash-forwarder.conf
-sudo sed -i '8,$s/^ENSURE-LEADING-WHITESPACE//'                                                     /etc/logstash-forwarder.conf
+sed -i '8d'                                                                                    /etc/logstash-forwarder.conf
+sed -i '8iENSURE-LEADING-WHITESPACE  "files": ['                                               /etc/logstash-forwarder.conf 
+sed -i '8aENSURE-LEADING-WHITESPACE    {       '                                               /etc/logstash-forwarder.conf
+sed -i '9aENSURE-LEADING-WHITESPACE      "paths": ['                                           /etc/logstash-forwarder.conf 
+sed -i '10aENSURE-LEADING-WHITESPACE        "/var/log/messages",'                              /etc/logstash-forwarder.conf
+sed -i '11aENSURE-LEADING-WHITESPACE        "/var/log/secure"'                                 /etc/logstash-forwarder.conf
+sed -i '12aENSURE-LEADING-WHITESPACE      ],'                                                  /etc/logstash-forwarder.conf
+sed -i '13aENSURE-LEADING-WHITESPACE      "fields": { "type": "syslog" }'                      /etc/logstash-forwarder.conf
+sed -i '14aENSURE-LEADING-WHITESPACE    }'                                                     /etc/logstash-forwarder.conf
+sed -i '15aENSURE-LEADING-WHITESPACE  ]'                                                       /etc/logstash-forwarder.conf
+sed -i '8,$s/^ENSURE-LEADING-WHITESPACE//'                                                     /etc/logstash-forwarder.conf
+
+cp /3deploy/modsecgrp_logstashforwarder.groovy .
 
 ##
 # Install Groovy.
 ##
-
-sudo yum install java-1.8.0-openjdk-devel -y
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
-curl -s get.sdkman.io | bash
-export SDKMAN_CANDIDATES_DIR=~/.sdkman/candidates
-export SDKMAN_DIR=~/.sdkman
-source ~/.sdkman/bin/sdkman-init.sh
-sed -i -e 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' ~/.sdkman/etc/config
-sdk install groovy
+cd /
+aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/dotsdkman.zip /
+unzip dotsdkman.zip
 
 ##
 # Modify security groups that allow Logstash Forwarder to talk to Logstash.
 # Also modify /etc/logstash-forwarder.conf.
 ##
 
-sudo cp ~/.sdkman/candidates/groovy/2.4.7/lib/groovy-2.4.7.jar .
-sudo cp ~/.sdkman/candidates/groovy/2.4.7/lib/groovy-json-2.4.7.jar .
-aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/modsecgrp_logstashforwarder.groovy .
-sudo ~/.sdkman/candidates/groovy/2.4.7/bin/groovyc modsecgrp_logstashforwarder.groovy
-sudo java -cp .:./groovy-2.4.7.jar:./groovy-json-2.4.7.jar modsecgrp_logstashforwarder /etc/logstash-forwarder.conf > /tmp/userdata-modsecgrp-output
+cd /
+cp /.sdkman/candidates/groovy/2.4.7/lib/groovy-2.4.7.jar .
+cp /.sdkman/candidates/groovy/2.4.7/lib/groovy-json-2.4.7.jar .
+/.sdkman/candidates/groovy/2.4.7/bin/groovyc modsecgrp_logstashforwarder.groovy
+java -cp .:./groovy-2.4.7.jar:./groovy-json-2.4.7.jar modsecgrp_logstashforwarder /etc/logstash-forwarder.conf > /tmp/userdata-modsecgrp-output
 
 
 ##
