@@ -29,7 +29,11 @@
     "Tags" : [{
      "Key":"craig-elk-component",
      "Value":"logstash"
-    }],
+     }, {
+     "Key":"Name",
+     "Value":"fruity"
+     }
+     ],
     "ImageId": {
      "Fn::FindInMap": [
       "EC2RegionMap", {
