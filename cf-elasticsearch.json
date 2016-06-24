@@ -49,7 +49,6 @@
 "#!/bin/bash -ex\n",
 "git clone https://github.com/craigwongva/3deploy.git\n",
 "cp 3deploy/userdata-elasticsearch .\n",
-"aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/userdata-elasticsearch .\n",
 "chmod +x /userdata-elasticsearch\n",
 "/userdata-elasticsearch\n"
      ]
