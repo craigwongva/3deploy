@@ -28,7 +28,7 @@
    "Properties": {
     "Tags" : [{
      "Key":"craig-elk-component",
-     "Value":"elasticsearch"
+     "Value":"elasticsearch2"
     }],
     "ImageId": {
      "Fn::FindInMap": [
@@ -43,7 +43,17 @@
     "SecurityGroupIds": [{
      "Ref": "SecurityGroup"
     }],
-    "IamInstanceProfile": "craigelk"
+    "IamInstanceProfile": "craigelk",
+    "UserData": {"Fn::Base64": {"Fn::Join": ["",
+     [
+"#!/bin/bash -ex\n",
+"git clone https://github.com/craigwongva/3deploy.git\n",
+"cp 3deploy/userdata-elasticsearch .\n",
+"aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/userdata-elasticsearch .\n",
+"chmod +x /userdata-elasticsearch\n",
+"/userdata-elasticsearch\n",
+     ]
+    ]}}
    }
   }
 }
