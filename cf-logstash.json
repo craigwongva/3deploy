@@ -48,6 +48,7 @@
      [
 "#!/bin/bash -ex\n",
 "yum install git -y\n",
+"yum install curl -y\n",
 "git clone https://github.com/craigwongva/3deploy.git\n",
 "cp 3deploy/userdata-logstash .\n",
 "chmod +x /userdata-logstash\n",
