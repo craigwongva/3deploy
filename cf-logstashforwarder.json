@@ -29,7 +29,11 @@
     "Tags" : [{
      "Key":"craig-elk-component",
      "Value":"logstashforwarder"
-    }],
+     }, {
+     "Key":"Name",
+     "Value":"craigLF"
+     }
+     ],
     "ImageId": {
      "Fn::FindInMap": [
       "EC2RegionMap", {
