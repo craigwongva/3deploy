@@ -8,6 +8,7 @@ cd /etc/pki/tls
 openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout private/logstash-forwarder.key -out certs/logstash-forwarder.crt
 aws s3 cp /etc/pki/tls/certs/logstash-forwarder.crt s3://venicegeo-devops-dev-logstashforwarder-project
 
+cd /
 mkdir /opt/logstash/conf.d
 cp /3deploy/01-lumberjack-input.conf /opt/logstash/conf.d
 cp /3deploy/10-syslog.conf /opt/logstash/conf.d
@@ -18,14 +19,8 @@ cp /3deploy/modsecgrp_logstash.groovy .
 # Install Groovy.
 ##
 
-yum install java-1.8.0-openjdk-devel -y > /tmp/install-java 2>&1
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
-curl -s get.sdkman.io | bash > /tmp/install-sdk 2>&1
-export SDKMAN_CANDIDATES_DIR=/.sdkman/candidates
-export SDKMAN_DIR=/.sdkman
-source /.sdkman/bin/sdkman-init.sh > /tmp/install-sdk-candidates 2>&1
-sed -i -e 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' /.sdkman/etc/config
-sdk install groovy > /tmp/install-groovy 2>&1
+aws s3 cp s3://venicegeo-devops-dev-logstashforwarder-project/dotsdkman.zip /
+unzip dotsdkman.zip
 
 ##
 # Modify security groups that allow Logstash Forwarder to talk to Logstash.
