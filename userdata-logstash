@@ -21,8 +21,8 @@ cp /3deploy/modsecgrp_logstash.groovy .
 yum install java-1.8.0-openjdk-devel -y > /tmp/install-java 2>&1
 export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
 curl -s get.sdkman.io | bash > /tmp/install-sdk 2>&1
-export SDKMAN_CANDIDATES_DIR=~/.sdkman/candidates
-export SDKMAN_DIR=~/.sdkman
+export SDKMAN_CANDIDATES_DIR=/.sdkman/candidates
+export SDKMAN_DIR=/.sdkman
 source /.sdkman/bin/sdkman-init.sh
 sed -i -e 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' /.sdkman/etc/config
 sdk install groovy > /tmp/install-groovy 2>&1
