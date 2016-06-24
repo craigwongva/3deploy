@@ -9,10 +9,10 @@ openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -new
 aws s3 cp /etc/pki/tls/certs/logstash-forwarder.crt s3://venicegeo-devops-dev-logstashforwarder-project
 
 mkdir /opt/logstash/conf.d
-cp 3deploy/01-lumberjack-input.conf /opt/logstash/conf.d
-cp 3deploy/10-syslog.conf /opt/logstash/conf.d
-cp 3deploy/30-lumberjack-output.conf /opt/logstash/conf.d
-cp 3deploy/modsecgrp_logstash.groovy .
+cp /3deploy/01-lumberjack-input.conf /opt/logstash/conf.d
+cp /3deploy/10-syslog.conf /opt/logstash/conf.d
+cp /3deploy/30-lumberjack-output.conf /opt/logstash/conf.d
+cp /3deploy/modsecgrp_logstash.groovy .
 
 ##
 # Install Groovy.
@@ -20,7 +20,7 @@ cp 3deploy/modsecgrp_logstash.groovy .
 
 yum install java-1.8.0-openjdk-devel -y > /tmp/install-java 2>&1
 export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
-curl -s get.sdkman.io | bash
+curl -s get.sdkman.io | bash > /tmp/install-sdk 2>&1
 export SDKMAN_CANDIDATES_DIR=~/.sdkman/candidates
 export SDKMAN_DIR=~/.sdkman
 source ~/.sdkman/bin/sdkman-init.sh
