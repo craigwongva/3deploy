@@ -79,10 +79,10 @@ def updateLogstashForwarderConfFileLocalhost(confFile, ip) {
 **/
 
 def logstashForwarderIPs             = getInstanceIPAddresses('craigLF')
-def logstashForwarderSecurityGroupID = getSecurityGroupID('craiglf-SecurityGroup')
+def logstashForwarderSecurityGroupID = getSecurityGroupID('craigLF-SecurityGroup')
 
 def logstashIPs                      = getInstanceIPAddresses('craigLg')
-def logstashSecurityGroupID          = getSecurityGroupID('craiglg-SecurityGroup')
+def logstashSecurityGroupID          = getSecurityGroupID('craigLg-SecurityGroup')
 
 authorizeSecurityGroupIngress(
  'allow LF to receive from Lg on 5043', 
