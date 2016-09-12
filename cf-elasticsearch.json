@@ -29,7 +29,11 @@
     "Tags" : [{
      "Key":"craig-elk-component",
      "Value":"elasticsearch2"
-    }],
+    }, {
+    "Key":"Name",
+    "Value":"craigES"
+    }
+    ],
     "ImageId": {
      "Fn::FindInMap": [
       "EC2RegionMap", {
@@ -57,4 +61,3 @@
   }
 }
 }
-
