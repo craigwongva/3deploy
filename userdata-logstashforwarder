@@ -28,8 +28,8 @@ sed -i '8d'                                                                     
 sed -i '8iENSURE-LEADING-WHITESPACE  "files": ['                                               /etc/logstash-forwarder.conf 
 sed -i '8aENSURE-LEADING-WHITESPACE    {       '                                               /etc/logstash-forwarder.conf
 sed -i '9aENSURE-LEADING-WHITESPACE      "paths": ['                                           /etc/logstash-forwarder.conf 
-sed -i '10aENSURE-LEADING-WHITESPACE        "/var/log/messages",'                              /etc/logstash-forwarder.conf
-sed -i '11aENSURE-LEADING-WHITESPACE        "/var/log/secure"'                                 /etc/logstash-forwarder.conf
+sed -i '10aENSURE-LEADING-WHITESPACE        "/var/log/messages" '                              /etc/logstash-forwarder.conf
+#sed -i '11aENSURE-LEADING-WHITESPACE        "/var/log/secure"'                                 /etc/logstash-forwarder.conf
 sed -i '12aENSURE-LEADING-WHITESPACE      ],'                                                  /etc/logstash-forwarder.conf
 sed -i '13aENSURE-LEADING-WHITESPACE      "fields": { "type": "syslog" }'                      /etc/logstash-forwarder.conf
 sed -i '14aENSURE-LEADING-WHITESPACE    }'                                                     /etc/logstash-forwarder.conf
