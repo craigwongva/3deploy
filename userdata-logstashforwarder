@@ -62,3 +62,7 @@ java -cp .:./groovy-2.4.7.jar:./groovy-json-2.4.7.jar modsecgrp_logstashforwarde
 ##
 
 #sudo /opt/logstash-forwarder/bin/logstash-forwarder -config /etc/logstash-forwarder.conf
+
+sudo -u ec2-user bash -c 'cd /home/ec2-user; touch file111'
+sudo -u ec2-user bash -c 'cd /home/ec2-user; git clone -b go https://github.com/craigwongva/gocontainer.git > /tmp/u01 2>&1 '
+sudo -u ec2-user bash -c 'cd /home/ec2-user; touch file112'
